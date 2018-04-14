@@ -7,9 +7,10 @@ router
 		console.log('a:_____', 'a');
 		ctx.body = '22222';
 	})
-	.post('/b', (ctx) => {
-		ctx.body = 'bbbb';
+	.post('/b', (ctx, next) => {
+		ctx.body = {
+			"aa": 123
+		};
 	})
-
-
+	
 	module.exports = router;

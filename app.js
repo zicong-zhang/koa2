@@ -1,27 +1,24 @@
 const Koa = require('koa')
-const app = new Koa()
-const koaRouter = require('koa-router');
+const app = new Koa();
+const cors = require('koa2-cors');
+const koaRouter = require('koa-router')();
+const logger = require('koa-logger');
 
-// const router = new koaRouter()
+const api = require('./router/api/index');
 
-const router = require('./router/user');
+const responseFormatter = require('./middleware/response_formatter');
 
-app.use(async (ctx, next) => {
-	console.log('88:_____', 88);
-	await next();
-	// ctx.body = 'aaa';
-	// console.log(ctx);
-	// const ct = [...ctx];
-	ctx.response = 111;
-})
+app.use(cors())
+.use(logger());
+
+app.use(responseFormatter);
 
 
+koaRouter.use('/api', api.routes(), api.allowedMethods());
+app.use(koaRouter.routes(), koaRouter.allowedMethods())
 
-app.use(router.routes())
 
-// app.use(router.routes());
 
-console.log('55:_____', 22);
 app.listen(8866, () => {
-	console.log('running at http://localhost:8866:_____', 'running at http://localhost:8866');
+	console.log('running at http://localhost:8866');
 })
