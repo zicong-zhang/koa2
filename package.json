@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "fs": "^0.0.1-security",
     "koa": "^2.5.0",
-    "koa-bodyparser": "^4.2.0",
+    "koa-body": "^2.5.0",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
+    "koa-static": "^4.0.2",
     "koa2-cors": "^2.0.5"
   }
 }
