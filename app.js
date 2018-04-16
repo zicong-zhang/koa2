@@ -5,15 +5,18 @@ const server = require('koa-static');
 const koaRouter = require('koa-router')();
 const koaBody = require('koa-body');
 const logger = require('koa-logger');
+const log = require('./middleware/logger');
 
 const api = require('./router/api/index');
 
 const responseFormatter = require('./middleware/response_formatter');
 
+
 app
 .use(koaBody())
 .use(cors())
-.use(logger());
+.use(log);
+// .use(logger());
 
 app.use(responseFormatter);
 
@@ -24,7 +27,7 @@ app.use(koaRouter.routes(), koaRouter.allowedMethods())
 
 
 app.listen(8866, () => {
-	console.log('running at http://localhost:8866');
+	console.log('\x1B[90m running at http://localhost:8866 \x1B[39m');
 })
 
 /* 

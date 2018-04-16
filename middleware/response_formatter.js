@@ -1,32 +1,28 @@
 const apiError = require('../error/api_error');
 
-var responseFormatter = async (ctx, next) => {
+const responseFormatter = async (ctx, next) => {
 	try {
 		await next();
-
-		if (ctx.body) {
-			let body = {...ctx.body};
-			ctx.body = {
-				code: 0,
-				msg: 'ok',
-				data: body
-			}
-		} else {
-			ctx.body = {
-				code: 0,
-				msg: 'ok'
-			}
+		let body = ctx.body ? { ...ctx.body } : {};
+		
+		ctx.body = {
+			code: 0,
+			msg: 'ok',
+			data: { ...body }
 		}
 
 	} catch (error) {
+		console.log('error:_____', error.errorCode);
 		//如果异常类型是 API 异常，将错误信息添加到响应体中返回。
 		if (error instanceof apiError) {
 			ctx.status = 200;
 			ctx.body = {
-				code: error.code,
-				msg: error.msg
+				code: error.errorCode,
+				msg: error.errorMsg
 			}
 		}
+
+		// throw error;
 	}
 }
 
