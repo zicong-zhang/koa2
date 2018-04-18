@@ -11,6 +11,11 @@ const api = require('./router/api/index');
 
 const responseFormatter = require('./middleware/response_formatter');
 
+/**
+ * TODO
+ * 配置babel，使用import
+ * 读取html模板返回前端渲染
+ */
 
 app
 .use(koaBody())
@@ -18,7 +23,7 @@ app
 .use(log);
 // .use(logger());
 
-app.use(responseFormatter);
+app.use(responseFormatter('^/api'));
 
 
 koaRouter.use('/api', api.routes(), api.allowedMethods());

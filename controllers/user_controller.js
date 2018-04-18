@@ -25,7 +25,7 @@ class userController {
 		let { id } = ctx.request.body;
 		console.log('ctx.req:_____', ctx.request.body);
 
-		if (id !== 1) {
+		if (id !=== 1) {
 			throw new ApiError('PARAM_ERROR');
 			ctx.body = {
 				a: 2,
