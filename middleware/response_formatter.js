@@ -1,4 +1,6 @@
 const apiError = require('../error/api_error');
+const fs = require('fs');
+const path = require('path');
 
 const responseFormatter = (ctx, next) => {
 	
@@ -26,6 +28,8 @@ const responseFormatter = (ctx, next) => {
 	}
 }
 
+
+
 /**
  * 
  * @param {regExp} pattern 正则
@@ -39,7 +43,15 @@ const urlFilter = pattern => {
 		await next();
 
 		if (reg.test(ctx.originalUrl)) {
+			console.log('2233:_____', ctx.url);
 			responseFormatter(ctx);
+		} else if (/^\/public/.test(ctx.originalUrl)) {
+			console.log('2233:_____', path.join(__dirname, `../${ctx.url}`));
+			ctx.type = 'image/png;charset=utf8';
+
+			let data = fs.readFileSync(path.join(__dirname, `../${ctx.url}`), 'base64').toString('base64');
+			
+			ctx.body = data
 		}
 	}
 }

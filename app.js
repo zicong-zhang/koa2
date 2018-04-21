@@ -6,6 +6,9 @@ const koaRouter = require('koa-router')();
 const koaBody = require('koa-body');
 const logger = require('koa-logger');
 const log = require('./middleware/logger');
+const path = require('path');
+// const koaStaticPlus =require('koa-static-plus')
+
 
 const api = require('./router/api/index');
 
@@ -17,6 +20,10 @@ const responseFormatter = require('./middleware/response_formatter');
  * 读取html模板返回前端渲染
  */
 
+// app.use(koaStaticPlus(path.join(__dirname, './dist'), {
+//   pathPrefix: '/public'  //路径前缀
+// }))
+
 app
 .use(koaBody())
 .use(cors())
@@ -24,6 +31,7 @@ app
 // .use(logger());
 
 app.use(responseFormatter('^/api'));
+app.use(server(__dirname+ "./public"));
 
 
 koaRouter.use('/api', api.routes(), api.allowedMethods());
