@@ -3,14 +3,26 @@ const fs = require('fs');
 const path = require('path');
 
 const responseFormatter = (ctx, next) => {
-	
+
 	try {
-		let body = ctx.body ? { ...ctx.body } : {};
-		
+		let body = null;
+		console.log(ctx.body)
+		switch(true) {
+			case ctx.body instanceof Array:
+				body = [ ...ctx.body ];
+				break;
+			case ctx.body instanceof Object:
+				body = { ...ctx.body };
+				break;
+			default:
+				body = [];
+				break;
+		}
+
 		ctx.body = {
 			code: 0,
 			msg: 'ok',
-			data: { ...body }
+			data: body
 		}
 
 	} catch (error) {
@@ -31,7 +43,7 @@ const responseFormatter = (ctx, next) => {
 
 
 /**
- * 
+ *
  * @param {regExp} pattern 正则
  */
 const urlFilter = pattern => {
@@ -50,7 +62,7 @@ const urlFilter = pattern => {
 			ctx.type = 'image/png;charset=utf8';
 
 			let data = fs.readFileSync(path.join(__dirname, `../${ctx.url}`), 'base64').toString('base64');
-			
+
 			ctx.body = data
 		}
 	}
@@ -58,7 +70,7 @@ const urlFilter = pattern => {
 
 module.exports = urlFilter;
 
-/* 
+/*
 instanceof的普通的用法，obj instanceof Object 检测 Object.prototype 是否存在于参数obj的原型链上。
 function Person(){};
 var p =new Person();
